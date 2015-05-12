@@ -10,6 +10,10 @@ class RunMysqlQuery(sublime_plugin.TextCommand):
     for sel in reversed(self.view.sel()):
       result.append(self._run(edit, sel, replace, append))
 
+      if len(self.view.sel()) == 1:
+        self.view.show(self.view.sel()[0].a)
+
+
   def _run(self, edit, sel, replace, append):
     query, query_start, query_end = mysql.extract_query(self.view, sel)
     if query == None:
@@ -44,9 +48,9 @@ class RunMysqlQuery(sublime_plugin.TextCommand):
 
       output.sel().clear()
 
-class PrintMysqlInfo(sublime_plugin.TextCommand):
-  def run(self, edit, replace = False):
-    print(mysql.get_info(self.view))
+# class PrintMysqlInfo(sublime_plugin.TextCommand):
+#   def run(self, edit, replace = False):
+#     print(mysql.get_info(self.view))
 
 class OpenMysqlConsole(sublime_plugin.TextCommand):
   def run(self, edit):
