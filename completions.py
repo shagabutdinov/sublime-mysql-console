@@ -12,11 +12,15 @@ class MysqlCompletions(sublime_plugin.EventListener):
     for location in locations:
       result += self._get_completions(info, view, prefix, location)
 
-    return result
+    if len(result) == 0:
+      return []
+
+    return (result, sublime.INHIBIT_WORD_COMPLETIONS |
+      sublime.INHIBIT_EXPLICIT_COMPLETIONS)
 
   def _get_completions(self, info, view, prefix, location):
     result = []
-    beginner = view.substr(sublime.Region(view.line(location).a, location))
+    beginner = view.substr(sublime.Region(max(location - 512, 0), location))
 
     quote = re.search(r'(`?)\w*$', beginner).group(1)
     if quote == '`':
@@ -51,7 +55,7 @@ class MysqlCompletions(sublime_plugin.EventListener):
     return result
 
   def _check_prefix(self, prefix, word):
-    if word == '':
+    if word == '' or prefix == word:
       return False
 
     if prefix == '':

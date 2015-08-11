@@ -25,3 +25,18 @@ class MysqlQueryContext(Base):
       return None
 
     return query[0]
+
+class MysqlQueryPrecedingContext(Base):
+
+  def on_query_context(self, *args):
+    return self._check_sel('mysql_query_preceding', self._callback, *args)
+
+  def _callback(self, view, sel):
+    if re.search(r'source\.sql', view.scope_name(sel.begin())) == None:
+      return None
+
+    query = mysql.extract_query(view, sel)
+    if query == None:
+      return None
+
+    return view.substr(sublime.Region(query[1], sel.begin()))

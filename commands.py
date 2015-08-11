@@ -48,10 +48,6 @@ class RunMysqlQuery(sublime_plugin.TextCommand):
 
       output.sel().clear()
 
-# class PrintMysqlInfo(sublime_plugin.TextCommand):
-#   def run(self, edit, replace = False):
-#     print(mysql.get_info(self.view))
-
 class OpenMysqlConsole(sublime_plugin.TextCommand):
   def run(self, edit):
     view = self.view.window().new_file()
