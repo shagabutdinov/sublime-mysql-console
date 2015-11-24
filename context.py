@@ -3,10 +3,11 @@ import sublime_plugin
 
 try:
   from Context.base import Base
-except ImportError:
+except ImportError as error:
   sublime.error_message("Dependency import failed; please read readme for " +
    "ScopeContext plugin for installation instructions; to disable this " +
-   "message remove this plugin")
+   "message remove this plugin; message: " + str(error))
+  raise error
 
 from . import mysql
 import re
