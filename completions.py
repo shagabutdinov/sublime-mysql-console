@@ -1,11 +1,26 @@
 import sublime
 import sublime_plugin
 
+from threading import Thread
+
 from . import mysql
 import re
 
+info = None
+
+class UpdateInfo(Thread):
+
+  def __init__(self, view):
+    Thread.__init__(self)
+    self.view = view
+
+  def run(self):
+    info = mysql.get_info(self.view)
+
+
 class MysqlCompletions(sublime_plugin.EventListener):
   def on_query_completions(self, view, prefix, locations):
+    global info
     scope = view.scope_name(view.sel()[0].begin())
     if re.search(r'source\.sql', scope) == None:
       return None
@@ -14,11 +29,14 @@ class MysqlCompletions(sublime_plugin.EventListener):
     if view.settings().get('mysql', None) != None:
       escape = '``'
     elif view.settings().get('pgsql', None) != None:
-      escape = '\''
+      escape = '"'
     else:
       return None
 
-    info = mysql.get_info(view)
+    if info == None:
+      info = mysql.get_info(view)
+    else:
+      UpdateInfo(view).start()
 
     result = []
     for location in locations:
@@ -67,14 +85,6 @@ class MysqlCompletions(sublime_plugin.EventListener):
         if self._check_prefix(prefix, table):
           result.append((table, table))
     else:
-
-      print(escape_with_question +
-          r'(\w+)' +
-          escape_with_question +
-          '\.' +
-          escape_with_question +
-          '\w+$')
-
       prefix_table = re.search(
         r'' +
         escape_with_question +
