@@ -2,7 +2,7 @@
   {
     "keys": ["enter"],
     "args": {
-      "append": true
+      "append": true,
     },
     "command": "run_mysql_query",
     "context": [

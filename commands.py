@@ -13,7 +13,6 @@ class RunMysqlQuery(sublime_plugin.TextCommand):
       if len(self.view.sel()) == 1:
         self.view.show(self.view.sel()[0].a)
 
-
   def _run(self, edit, sel, replace, append):
     query, query_start, query_end = mysql.extract_query(self.view, sel)
     if query == None:
@@ -38,8 +37,9 @@ class RunMysqlQuery(sublime_plugin.TextCommand):
 
       output.set_read_only(False)
       output.run_command('append', {
-        'characters': result
+        'characters': result,
       })
+
       output.set_read_only(True)
 
       self.view.window().run_command("show_panel", {
