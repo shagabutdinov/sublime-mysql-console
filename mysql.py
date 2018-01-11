@@ -14,6 +14,9 @@ def extract_query(view, sel):
     if view.substr(sublime.Region(point - 1, point)) == ';':
       point -= 1
 
+    if view.substr(sublime.Region(point - 2, point)) == '; ':
+      point -= 2
+
     if view.substr(sublime.Region(point - 2, point)) == '\G':
       point -= 2
 
@@ -50,12 +53,12 @@ def run_query(view, query, options = []):
     if isinstance(query, list):
       new_query = []
       for part in query:
-        new_query += ['--command', part]
+        new_query = new_query + ['--command', part]
 
       query = new_query
     else:
       if query.endswith('\G'):
-        options += ['--expanded']
+        options = options + ['--expanded']
         query = query[:-2]
 
       if query.endswith(';'):

@@ -6,7 +6,7 @@
     },
     "command": "run_mysql_query",
     "context": [
-      {"key": "preceding_text_begin", "operator": "regex_contains", "operand": "\\s*(;|\\G)$"},
+      {"key": "preceding_text_begin", "operator": "regex_contains", "operand": "\\s*(;\\s?|\\G)$"},
       {"key": "selection_empty", "operator": "equal", "operand": true},
       {"key": "scope", "operator": "regex_contains", "operand": "sql"}
     ],

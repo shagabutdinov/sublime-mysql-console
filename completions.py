@@ -66,7 +66,7 @@ class MysqlCompletions(sublime_plugin.EventListener):
 
     query = mysql.extract_query(view, sublime.Region(location, location))
     tables_in_query = re.findall(
-      r'(?:TABLE|FROM|INTO|UPDATE|JOIN) ' +
+      r'(?:TABLE|FROM|INTO|UPDATE|JOIN)\s+' +
         escape_with_question +
         '(\w+)' +
         '(?:' + escape_with_question + '|[\s;])',
