@@ -102,14 +102,18 @@ class MysqlCompletions(sublime_plugin.EventListener):
             result.append((field, quote + field + quote))
       else:
         for table in tables_in_query:
-          if table == '' or table not in info:
+          if table not in info:
             continue
+
+          completion_prefix = ''
+          if 'UPDATE' not in query[0]:
+            completion_prefix = quote + table + quote + '.'
 
           for field in list(info[table]['fields'].keys()):
             if self._check_prefix(prefix, field):
               result.append((
                 table + ': ' + field,
-                quote + table + quote + '.' + quote + field + quote
+                completion_prefix + quote + field + quote
               ))
 
     for table in tables_in_query:
