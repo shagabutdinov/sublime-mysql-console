@@ -5,20 +5,20 @@ from . import mysql
 import re
 
 class RunMysqlQuery(sublime_plugin.TextCommand):
-  def run(self, edit, replace = False, append = False):
+  def run(self, edit, replace = False, append = False, expand = False):
     result = []
     for sel in reversed(self.view.sel()):
-      result.append(self._run(edit, sel, replace, append))
+      result.append(self._run(edit, sel, replace, append, expand))
 
       if len(self.view.sel()) == 1:
         self.view.show(self.view.sel()[0].a)
 
-  def _run(self, edit, sel, replace, append):
+  def _run(self, edit, sel, replace, append, expand):
     query, query_start, query_end = mysql.extract_query(self.view, sel)
     if query == None:
       return
 
-    _, result = mysql.run_query(self.view, query)
+    _, result = mysql.run_query(self.view, query, expand)
 
     if replace:
       self.view.replace(

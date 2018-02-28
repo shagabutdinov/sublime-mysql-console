@@ -43,9 +43,12 @@ def extract_query(view, sel):
 
   return query, query_start, query_end
 
-def run_query(view, query, options = []):
+def run_query(view, query, expand = False, options = []):
   settings = view.settings().get('mysql', None)
   if settings != None:
+    if expand and query.endswith(';'):
+      query = query[:-1] + '\G'
+
     return run_sql_query(settings + ['-e', query] + options)
 
   settings = view.settings().get('pgsql', None)
@@ -57,7 +60,9 @@ def run_query(view, query, options = []):
 
       query = new_query
     else:
-      if query.endswith('\G'):
+      if expand:
+        options = options + ['--expanded']
+      elif query.endswith('\G'):
         options = options + ['--expanded']
         query = query[:-2]
 
