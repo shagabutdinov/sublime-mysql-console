@@ -54,6 +54,7 @@ class OpenMysqlConsole(sublime_plugin.TextCommand):
     view.set_scratch(True)
     view.set_syntax_file('Packages/SQL/SQL.tmLanguage')
     view.settings().set('auto_complete', True)
+    view.settings().set('word_wrap', False)
     view.settings().set('auto_complete_triggers', [
       {
         "characters": "`",
