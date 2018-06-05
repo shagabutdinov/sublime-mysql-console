@@ -41,7 +41,7 @@ def extract_query(view, sel):
   query = view.substr(sublime.Region(query_start, query_end))
   query_start += len(re.search('^(\s*)', query).group(1))
 
-  return query, query_start, query_end
+  return query.strip(), query_start, query_end
 
 def run_query(view, query, expand = False, options = []):
   settings = view.settings().get('mysql', None)

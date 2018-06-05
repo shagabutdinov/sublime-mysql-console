@@ -4,6 +4,8 @@ import sublime_plugin
 from . import mysql
 import re
 
+RESULT_MAX_LENGTH = 1024 * 1024 * 5
+
 class RunMysqlQuery(sublime_plugin.TextCommand):
   def run(self, edit, replace = False, append = False, expand = False):
     result = []
@@ -19,6 +21,9 @@ class RunMysqlQuery(sublime_plugin.TextCommand):
       return
 
     _, result = mysql.run_query(self.view, query, expand)
+
+    if len(result) > RESULT_MAX_LENGTH:
+      result = result[:RESULT_MAX_LENGTH] + "\n<...>"
 
     if replace:
       self.view.replace(
