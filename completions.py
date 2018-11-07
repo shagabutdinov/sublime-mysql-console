@@ -27,7 +27,7 @@ class MysqlCompletions(sublime_plugin.EventListener):
 
     escape = ''
     if view.settings().get('mysql', None) != None:
-      escape = '``'
+      escape = '`'
     elif view.settings().get('pgsql', None) != None:
       escape = '"'
     else:
@@ -54,7 +54,10 @@ class MysqlCompletions(sublime_plugin.EventListener):
     result = []
     beginner = view.substr(sublime.Region(max(location - 512, 0), location))
 
-    quote = re.search(r'(' + escape + '?)\w*$', beginner).group(1)
+    quote = re.search(r'(' + escape + '?)\w*$', beginner)
+    if quote != None:
+      quote = quote.group(1)
+
     if quote == escape:
       quote = ''
     else:

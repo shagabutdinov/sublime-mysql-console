@@ -78,7 +78,7 @@ def run_query(view, query, expand = False, options = []):
     'mysql or pgsql should be set in project or global settings',
   )
 
-def run_sql_query(command, password):
+def run_sql_query(command, password = ''):
   try:
     result = subprocess.check_output(
       command,
