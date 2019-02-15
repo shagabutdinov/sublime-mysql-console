@@ -3,7 +3,6 @@
     "caption": "MysqlConsole: Open Console",
     "command": "open_mysql_console"
   },
-[
   {
     "caption": "MysqlConsole: Run Query",
     "command": "run_mysql_query"
